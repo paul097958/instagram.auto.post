@@ -1,0 +1,61 @@
+{
+  "name": "instagram",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@floating-ui/react": "^0.26.16",
+    "@floating-ui/react-dom": "^2.1.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@uppy/core": "^3.11.3",
+    "@uppy/dashboard": "^3.8.3",
+    "@uppy/image-editor": "^2.4.6",
+    "auto-text-size": "^0.2.3",
+    "bad-words-next": "^2.3.1",
+    "canvas-hypertxt": "^1.0.3",
+    "crypto-hash": "^3.0.0",
+    "firebase": "^10.11.1",
+    "html2canvas": "^1.4.1",
+    "instagram-private-api": "^1.46.1",
+    "react": "^18.3.1",
+    "react-avatar-editor": "^13.0.2",
+    "react-dom": "^18.3.1",
+    "react-fullscreen-loading": "^0.0.4",
+    "react-loader-spinner": "^6.1.6",
+    "react-router-dom": "^6.23.0",
+    "react-scripts": "5.0.1",
+    "remove-array-items": "^3.0.0",
+    "request-promise": "^4.2.6",
+    "text-image": "^0.7.0",
+    "use-local-storage": "^3.0.0",
+    "uuid": "^9.0.1",
+    "web-vitals": "^2.1.4",
+    "word-wrapper": "^1.0.7"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "homepage": "."
+}
