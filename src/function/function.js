@@ -132,8 +132,10 @@ async function toTheServer(uri, text) {
     const ip = await getMyIP()
     let uploadStateFromCheck = await checkTheIpExistAndInsert(ip)
     if (!uploadStateFromCheck) {
-        alert('你在五分鐘傳超過三則貼文，將封鎖一個月。')
-        return false
+        return {
+            state: false,
+            reason: '你在五分鐘傳超過三則貼文，將封鎖一個月。'
+        }
     }
     // check ip
     const formdata = new FormData()
@@ -151,7 +153,8 @@ async function toTheServer(uri, text) {
         const docRef = doc(db, "community", "basic");
         const docSnap = await getDoc(docRef);
         if (!docSnap.exists()) return
-        const currenyId = (docSnap.data().post + 1).toString()
+        let basicData = docSnap.data()
+        const currenyId = (basicData.post + 1).toString()
         // increment 1 in basic
         await addDoc(collection(db, "community"), {
             img: data.data.link,
@@ -167,9 +170,16 @@ async function toTheServer(uri, text) {
             post: increment(1)
         });
         // add collection
-        return true
+        return {
+            state: true,
+            list: basicData.list,
+            currenyId: currenyId
+        }
     }else{
-        return false
+        return {
+            state: false,
+            reason: '不知名錯誤，請洽詢帳號擁有者。'
+        }
     }
 }
 

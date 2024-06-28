@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { uploadImg, toTheServer } from '../function/function';
 import { APP_NAME } from '../config';
-import Loading from 'react-fullscreen-loading';
+import Loading from '../components/Loadding';
 import AvatarEditor from 'react-avatar-editor'
 
 
@@ -14,7 +14,12 @@ function New() {
     const [zoom, setZoom] = useState(1)
     const canvasElement = useRef()
     const inputElement = useRef()
-    const imgElement = useRef()
+    const [successState, setSuccessState] = useState(null)
+    const [loadingData, setLoadingData] = useState({
+        currentId: '0000',
+        list: [],
+        reason: ''
+    })
     const firstTime = useRef(true)
     const navigate = useNavigate()
     function previewFile() {
@@ -24,7 +29,7 @@ function New() {
     return (
         <div className='main-container'>
             <div className="container pt-3 d-flex flex-column align-items-center">
-                <div className='d-flex gap-3 align-items-center'>
+                <div className='d-flex gap-2 align-items-center'>
                     <p className='fs-1 fw-bold m-0' style={{
                         fontFamily: '"Noto Sans TC", sans-serif'
                     }}>{APP_NAME}</p>
@@ -33,8 +38,10 @@ function New() {
                         height: '4em'
                     }} />
                 </div>
-                <Loading loading={sending} background="rgba(197, 50, 255, 0.566)" loaderColor="#3498db" />
-                <div className='d-flex gap-1 mb-4 mt-3'>
+                <Loading loading={sending} success={successState} data={loadingData} />
+                <div className='gap-1 mb-4 d-flex mt-3' style={{
+                    width: '23.3em'
+                }}>
                     <Link to="/">
                         <button className='btn btn-dark'>文字模式</button>
                     </Link>
@@ -55,7 +62,7 @@ function New() {
                             resize: 'none',
                             padding: '15px',
                             fontSize: 25,
-                            fontWeight: 'bold',
+                            fontWeight: '500',
                             height: 150,
                             lineHeight: 1
                         }}
@@ -73,7 +80,10 @@ function New() {
                         </div>
                         <div className='d-flex gap-1'>
                             <label
-                                className='btn btn-success mt-3'
+                                className='btn btn-light mt-3'
+                                style={{
+                                    backgroundColor: '#E41AC7'
+                                }}
                                 for="fileTag"
                             >
                                 上傳
@@ -89,7 +99,10 @@ function New() {
                                 }}
                             />
                             <button
-                                className='btn btn-warning mt-3'
+                                className='btn btn-light mt-3'
+                                style={{
+                                    backgroundColor: '#B15BFF'
+                                }}
                                 onClick={async () => {
                                     if (sending) return
                                     if (firstTime.current) {
@@ -102,18 +115,24 @@ function New() {
                                     } else {
                                         setSending(prop => !prop)
                                         let serverState = await toTheServer(canvasElement.current.getImage().toDataURL('image/jpeg'), text)
-                                        if (serverState) {
-                                            alert('成功')
+                                        if (serverState.state) {
                                             setSending(prop => !prop)
-                                            navigate('/hello')
+                                            setSuccessState(true)
+                                            setLoadingData({
+                                                currentId: serverState.currenyId,
+                                                list: serverState.list
+                                            })
                                         } else {
-                                            alert('上傳失敗')
                                             setSending(prop => !prop)
+                                            setSuccessState(false)
+                                            setLoadingData({
+                                                reason: serverState.reason
+                                            })
                                         }
                                     }
                                 }}
                             >
-                                {sending ? '傳送中...請不要關掉頁面' : '送出'}
+                                {sending ? '傳送中...' : '送出'}
                             </button>
                         </div>
                     </div>

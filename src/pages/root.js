@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { collection, getDocs, doc, getDoc, updateDoc, setDoc, deleteDoc, orderBy, arrayRemove } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bars } from 'react-loader-spinner'
 import useLocalStorage from "use-local-storage";
 import { db } from '../config';
@@ -11,7 +11,7 @@ function Root() {
     const [email, setEmail] = useLocalStorage("email", "");
     const [password, setPassword] = useLocalStorage("password", "");
     const [newPassword, setNewPassword] = useState('')
-    const [newUserEmail, setNewUserEmail] = useState('')
+    const [verifyCode, setVerifyCode] = useState('')
     const [loadingState, setLoadingState] = useState(false)
     const [uploadArray, setUploadArray] = useState([])
     const [deleteArray, setDeleteArray] = useState([])
@@ -91,120 +91,7 @@ function Root() {
     return (
         <div className="container mt-5 mb-5">
             <h1 className='mb-5'>管理員專區</h1>
-            <div className='d-flex'>
-                <div className='border rounded mb-3 p-2' style={{ width: '20em' }}>
-                    <div>
-                        <p className='fs-6 fw-bold m-0'>密碼更改</p>
-                        <p className='fs-6 m-1'>新密碼:</p>
-                        <input
-                            type='password'
-                            className='form-control mb-2'
-                            value={newPassword}
-                            onChange={(e) => {
-                                setNewPassword(e.target.value)
-                            }}
-                        />
-                        <button
-                            className='btn btn-warning'
-                            onClick={async () => {
-                                if (newPassword != '') {
-                                    if (getPrompt(newPassword, '請再輸入一次密碼')) {
-                                        const changePassword = doc(db, "community", 'basic')
-                                        await updateDoc(changePassword, {
-                                            password: newPassword
-                                        })
-                                        setPassword(newPassword)
-                                    } else {
-                                        alert('密碼不一致，請重新檢查')
-                                    }
-                                } else {
-                                    alert('請輸入新的密碼')
-                                }
-                            }}
-                        >確認</button>
-                    </div>
-
-                </div>
-                <div className='border rounded mb-3 p-2 mx-2' style={{ width: '20em' }}>
-
-                    <div>
-                        <p className='fs-6 fw-bold m-0'>新增審查員</p>
-                        <p className='fs-6 m-1'>email:</p>
-                        <input
-                            type='email'
-                            className='form-control mb-2'
-                            value={newUserEmail}
-                            onChange={(e) => {
-                                setNewUserEmail(e.target.value)
-                            }}
-                        />
-                        <p>預設密碼為：0000</p>
-                        <button
-                            className='btn btn-success'
-                            onClick={async () => {
-                                if (newUserEmail != '') {
-                                    const addUser = doc(db, "users", newUserEmail)
-                                    await setDoc(addUser, {
-                                        password: '0000',
-                                        state: true,
-                                        agree: 0,
-                                        disagree: 0
-                                    })
-                                    setNewUserEmail('')
-                                } else {
-                                    alert('請輸入審查員的email')
-                                }
-                            }}
-                        >確認</button>
-                    </div>
-                </div>
-            </div>
-            <div className='border rounded mb-3 p-2' style={{ width: '20em' }}>
-                <p className='fs-6 fw-bold m-0'>編輯審查員資料</p>
-                {
-                    usersData.map((item, index) => {
-                        return (
-                            <div className='d-flex flex-column'>
-                                <div className='d-flex flex-column border rounded m-1 p-1'>
-                                    <p className='fs-5 m-0'>{item.email}</p>
-                                    <p className='m-0'>{item.agree} : {item.disagree}</p>
-                                    <p className='m-0'>總審理數：{item.agree + item.disagree}</p>
-                                    <div className='d-flex gap-1'>
-                                        <button
-                                            className={'btn btn-sm btn-' + (item.state ? 'warning' : 'success')}
-                                            onClick={async () => {
-                                                await updateDoc(doc(db, 'users', item.email), {
-                                                    state: !item.state
-                                                })
-                                                navigate(0)
-                                            }}
-                                        >{item.state ? '停權' : '復原'}</button>
-                                        <button
-                                            className='btn btn-sm btn-danger'
-                                            onClick={async () => {
-                                                if (getPrompt(item.email, '請輸入' + item.email + '才能刪除帳號')) {
-                                                    await deleteDoc(doc(db, 'users', item.email))
-                                                } else {
-                                                    alert('輸入錯誤，請重試')
-                                                }
-                                            }}
-                                        >刪除帳號</button>
-                                        <button
-                                            className='btn btn-sm btn-secondary'
-                                            onClick={async () => {
-                                                await updateDoc(doc(db, 'users', item.email), {
-                                                    password: '0000'
-                                                })
-                                                alert('密碼已重設為0000')
-                                            }}
-                                        >重設密碼</button>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })
-                }
-            </div>
+            <p className='border rounded p-3 text-center fs-1 fw-bold bg-light' style={{ width: '5em' }}>#{nowNewPostNumber}</p>
             <div className='border rounded mb-3 p-2' style={{ width: '20em' }}>
                 <p className='fs-6 fw-bold m-0'>已決議之刪除文章</p>
                 <p className='fs-6 fw-lighter'>若不刪除可能造成帳號封鎖或是群眾反彈</p>
@@ -229,6 +116,20 @@ function Root() {
                 }
             </div>
             <div className='border rounded mb-3 p-2' style={{ width: '20em' }}>
+                <p className='fs-6 fw-bold m-0'>待上傳之文章</p>
+                <p className='fs-6 fw-lighter'>若超過設定時間未上傳，請檢查相關設定</p>
+                <p className='fw-bold m-0'>目前最新的貼文編號為：#{nowNewPostNumber}</p>
+                {
+                    uploadArray.map(item => {
+                        return (
+                            <div className='border m-2 bg-light d-flex justify-content-center'>
+                                <p className='fw-bold m-0 fs-4'>#{item}</p>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            <div className='border rounded mb-3 p-2' style={{ width: '20em' }}>
                 <p className='fs-6 fw-bold m-0'>刪除cookie</p>
                 <p className='fs-6 fw-lighter'>當遭遇伺服器錯誤時請嘗試按下此鍵</p>
                 <button
@@ -246,19 +147,62 @@ function Root() {
                 >重設</button>
             </div>
             <div className='border rounded mb-3 p-2' style={{ width: '20em' }}>
-                <p className='fs-6 fw-bold m-0'>待上傳之文章</p>
-                <p className='fs-6 fw-lighter'>若超過設定時間未上傳，請檢查相關設定</p>
-                <p className='fw-bold m-0'>目前最新的貼文編號為：#{nowNewPostNumber}</p>
-                {
-                    uploadArray.map(item => {
-                        return (
-                            <div className='border m-2 bg-light d-flex justify-content-center'>
-                                <p className='fw-bold m-0 fs-4'>#{item}</p>
-                            </div>
-                        )
-                    })
-                }
+                <p className='fs-6 fw-bold m-0'>簡訊驗證碼</p>
+                <p className='fs-6 fw-lighter'>請在收到簡訊後馬上輸入</p>
+                <input
+                    type='text'
+                    className='form-control mb-2'
+                    value={verifyCode}
+                    onChange={(e) => {
+                        setVerifyCode(e.target.value)
+                    }}
+                />
+                <button
+                    className='btn btn-warning'
+                    onClick={async () => {
+                        if(verifyCode == "") return
+                        await updateDoc(doc(db, 'community', 'basic'), {
+                            code: verifyCode
+                        })
+                        setVerifyCode("")
+                    }}
+                >確認</button>
             </div>
+            <div className='border rounded mb-3 p-2' style={{ width: '20em' }}>
+                <div>
+                    <p className='fs-6 fw-bold m-0'>密碼更改</p>
+                    <p className='fs-6 m-1'>新密碼:</p>
+                    <input
+                        type='password'
+                        className='form-control mb-2'
+                        value={newPassword}
+                        onChange={(e) => {
+                            setNewPassword(e.target.value)
+                        }}
+                    />
+                    <button
+                        className='btn btn-warning'
+                        onClick={async () => {
+                            if (newPassword != '') {
+                                if (getPrompt(newPassword, '請再輸入一次密碼')) {
+                                    const changePassword = doc(db, "community", 'basic')
+                                    await updateDoc(changePassword, {
+                                        password: newPassword
+                                    })
+                                    setPassword(newPassword)
+                                } else {
+                                    alert('密碼不一致，請重新檢查')
+                                }
+                            } else {
+                                alert('請輸入新的密碼')
+                            }
+                        }}
+                    >確認</button>
+                </div>
+            </div>
+            <Link to="/usermanage">
+                <button className='btn btn-dark mb-4'>管理審查員</button>
+            </Link>
             {!loadingState ? <Bars
                 height="80"
                 width="80"
