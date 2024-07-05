@@ -19,16 +19,9 @@ function DeletePage() {
         <div className="container mt-5 mb-5">
             <div className='mt-4'>
                 <h1>內容申訴</h1>
-                <p className='mt-4'>請注意，審查員僅對下列事項予以刪除</p>
-                <ul>
-                    <li>造謠或是不符合事實之言論</li>
-                    <li>使用嚴重字詞攻擊別人之言論或未經本人允許發布的照片</li>
-                    <li>使帳號容易被封禁之言論或照片，包括暴力色情</li>
-                    <li>重複(至少五篇)且無意義之言論或照片</li>
-                </ul>
-                <p>其餘則會被審查員之表決退回，可重複申請，並且不會收集申請人的資料</p>
+                <p className='mt-4'>請注意，申訴之後不是立刻刪除，會先經由審查員審核通過才予以刪除。而正在審核或是已經決議刪除或退回之貼文則無法再次提出申請。</p>
                 <Link to={'/view'}>
-                    <button className='btn btn-info'>查看申訴文章</button>
+                    <button className='btn btn-info'>查看決議文章</button>
                 </Link>
             </div>
             <div className='mt-5'>

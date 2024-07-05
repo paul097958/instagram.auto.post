@@ -1,6 +1,6 @@
 # 自動上傳匿名系統
 
-> 版本號：0.1.0 可適用伺服器最舊版本：0.1.0
+> 版本號：0.1.1 可適用伺服器最舊版本：0.1.0
 
 ## 技術支持
 
@@ -51,7 +51,7 @@ Client ID就是剛剛上一個頁面取得的。訪問這個頁面時，你就�
 
 接下來頁面顯示什麼不重要，只要複製下來網址就好，網址的形式如下。
 
-> <p>https://www.postman.com/oauth2/callback#access_token=<span style="color: red;">YOUR_TOKEN</span>&expires_in=315360000&token_type=bearer&refresh_token=<span style="color: red;">YOUR_REFRESH_TOKEN</span>&account_username=paul097958&account_id=163392981</p>
+> www.postman.com/oauth2/callback#access_token=**YOUR_TOKEN**&expires_in=315360000&token_type=bearer&refresh_token=**YOUR_REFRESH_TOKEN**&account_username=paul097958&account_id=163392981
 
 只要記好上面我有標註紅色的內容就好，建議記到記事本裡
 
@@ -198,7 +198,7 @@ Client ID就是剛剛上一個頁面取得的。訪問這個頁面時，你就�
 
 ![github 1](https://i.imgur.com/NKcW10j.png)
 
-下載之後記得<span style="font-size: 30px; font-weight: bold; color: red;">解壓縮</span>我用紅色的代表很重要，因為Windows可以在沒有解壓縮的情況下打開檔案。
+下載之後記得**解壓縮**，因為Windows可以在沒有解壓縮的情況下打開檔案。
 
 ---
 
@@ -234,7 +234,7 @@ Client ID就是剛剛上一個頁面取得的。訪問這個頁面時，你就�
 
 ### 部署網站
 
-<span style="font-size: 30px; font-weight: bold; color: red;">請注意：接下來的步驟必須先完成後端的部署，再來操作</span>
+**請注意：接下來的步驟必須先完成後端的部署，再來操作**
 
 ### 下載Node js
 
@@ -245,7 +245,7 @@ Client ID就是剛剛上一個頁面取得的。訪問這個頁面時，你就�
 接下來在命令提示字元或終端機裡面輸入以下指令
 
 ```shell
-cd /current_directory
+cd /資料夾
 npm i
 npm run build
 ```

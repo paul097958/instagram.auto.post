@@ -66,14 +66,14 @@ function ViewPage() {
                             return (
                                 <div className='p-2 border rounded d-flex mt-2' key={index}>
                                     <div className='d-flex flex-column justify-content-center align-items-center' style={{ width: '5rem' }}>
-                                        <p className='m-0 mx-2 fw-bold fs-6 bg-dark text-white p-1 rounded m-1 px-2'>#{item.id}</p>
+                                        <p className='m-0 mx-2 fw-bold fs-6 p-1 rounded m-1 px-2'>#{item.id}</p>
                                         {
-                                            item.result ? <button className='btn btn-danger btn-sm'>已刪除</button> : <button className='btn btn-success btn-sm'>已退回</button>
+                                            item.result ? <p className='text-danger'>已刪除</p> : <p className='text-success'>已退回</p>
                                         }
                                     </div>
                                     <p className='m-0 mx-3 fs-6' style={{ width: '15rem' }}>{item.reason}</p>
                                     <p className='m-0 mx-3 fs-6 fw-bold' style={{minWidth: '3rem'}}>{item.agree} : {item.disagree}</p>
-                                    <p>{item.time.year}/{item.time.month}/{item.time.date} {item.time.hour}:{item.time.minute}</p>
+                                    <p>{item.time.year} / {item.time.month} / {item.time.date} {item.time.hour}:{item.time.minute}</p>
                                 </div>
                             )
                         })

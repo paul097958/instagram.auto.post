@@ -48,7 +48,7 @@ function Dashboard() {
         }
         if (docSnap.exists()) {
             let messageData = docSnap.data()
-            if (messageData.account.length + 1 >= 5) {
+            if (messageData.agree + agreeCount >= 3 || messageData.disagree + disagreeCount >= 3) {
                 // when the people reach 5
                 await deleteDoc(doc(db, "message", id))
                 if (messageData.agree + agreeCount >= messageData.disagree + disagreeCount) {

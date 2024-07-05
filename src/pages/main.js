@@ -22,7 +22,6 @@ function Main() {
   const canvasElement = useRef()
   const textContainer = useRef()
   const fontSizeRef = useRef(35)
-  const navigate = useNavigate()
   useEffect(() => {
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     async function adjustFontSizeToFit(container, textElement) {
@@ -186,6 +185,7 @@ function Main() {
             }} ref={textContainer}>{text}</p>
           </div>
         </div>
+        <p className='text-light'>版本號：0.1.1</p>
       </div>
     </div>
   );
